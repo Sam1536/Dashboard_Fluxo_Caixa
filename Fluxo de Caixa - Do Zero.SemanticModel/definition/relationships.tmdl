@@ -1,0 +1,14 @@
+relationship db0d3b2b-8029-4d50-b8d0-f3a3acb99bb0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendario.Datas
+	toColumn: LocalDateTable_77a61966-5066-4053-97c3-cd4d2d8986e0.Date
+
+relationship 21ef0362-a41b-473a-b063-360c79247131
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendario.Mes/Ano
+	toColumn: LocalDateTable_af2fd40f-9c4e-4fe5-8194-bb624b10be97.Date
+
+relationship 7c08118b-09b4-4008-a1a0-8318adaf7a46
+	fromColumn: Movimentações.Data
+	toColumn: Calendario.Datas
+

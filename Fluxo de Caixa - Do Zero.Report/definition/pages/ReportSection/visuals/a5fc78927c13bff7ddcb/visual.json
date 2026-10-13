@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "a5fc78927c13bff7ddcb",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 9000,
+    "height": 710.58823529411768,
+    "width": 1280,
+    "tabOrder": 11002
+  },
+  "visualGroup": {
+    "displayName": "Filtro Custo ",
+    "groupMode": "ScaleMode"
+  },
+  "isHidden": true
+}

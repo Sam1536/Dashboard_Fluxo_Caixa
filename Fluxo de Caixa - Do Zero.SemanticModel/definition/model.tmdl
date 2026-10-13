@@ -1,0 +1,23 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Movimentações","_Medidas"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Movimentações
+ref table DateTableTemplate_3c2f48dc-81d4-419c-9362-ba0b672956cd
+ref table Calendario
+ref table LocalDateTable_77a61966-5066-4053-97c3-cd4d2d8986e0
+ref table LocalDateTable_af2fd40f-9c4e-4fe5-8194-bb624b10be97
+ref table _Medidas
+
+ref cultureInfo pt-BR
+

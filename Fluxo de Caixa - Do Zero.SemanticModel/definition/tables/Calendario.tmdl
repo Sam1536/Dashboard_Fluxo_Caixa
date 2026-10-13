@@ -1,0 +1,65 @@
+table Calendario
+	lineageTag: b88a0bc2-29e0-4b06-ad30-a035a16f0704
+
+	column Datas
+		formatString: dd/mm/yyyy
+		lineageTag: a5753d04-714a-4d58-9d04-8cb5c210a122
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: db0d3b2b-8029-4d50-b8d0-f3a3acb99bb0
+			defaultHierarchy: LocalDateTable_77a61966-5066-4053-97c3-cd4d2d8986e0.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Ano = YEAR(Calendario[Datas])
+		formatString: 0
+		lineageTag: 4095ae1b-6a4a-47c7-8d9f-29524989f812
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes = MONTH(Calendario[Datas])
+		formatString: 0
+		lineageTag: 2d14ffd7-74e6-42c5-a117-6004a714a001
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes/Ano = STARTOFMONTH(Calendario[Datas])
+		formatString: mmm/yyyy
+		lineageTag: e8aff1d1-7812-42e3-95a9-c5c0bb2ce9eb
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 21ef0362-a41b-473a-b063-360c79247131
+			defaultHierarchy: LocalDateTable_af2fd40f-9c4e-4fe5-8194-bb624b10be97.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column 'Nome do Mes' = Calendario[Datas].[Mês]
+		lineageTag: 7c56fdef-7873-4c8b-ae84-116a5f0aeb0a
+		summarizeBy: none
+		sortByColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition Calendario-1f4113c8-1a69-48f7-a491-a17ad621f524 = calculated
+		mode: import
+		source = CALENDARAUTO()
+
+	annotation PBI_Id = d70c0fcc45ca4a47829fbb6ec6886d50
+

@@ -1,0 +1,95 @@
+table _Medidas
+	lineageTag: 79a8d8f9-badf-497c-b100-27554a70eedb
+
+	measure Saldo = SUM('Movimentações'[Valor])
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: fff76076-c2be-4a7b-9ff0-7e5087ffa0f0
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Entradas = ```
+			
+			CALCULATE(
+			    SUM(
+			        'Movimentações'[Valor]),
+			        'Movimentações'[Tipo Movimentação] = "entradas"
+			)
+			        
+			        
+			```
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 884dc577-623f-48e3-83be-bc6dcecb2983
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Saidas =
+			
+			-CALCULATE(
+			    SUM(
+			        'Movimentações'[Valor]),
+			        'Movimentações'[Tipo Movimentação] = "Saídas"
+			)
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 869630fe-b560-4323-829f-9e849efa6eda
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Saldo Inicial' =
+			
+			CALCULATE(
+			    MIN('Movimentações'[Acumulado]),
+			    'Movimentações'[Num. Movimentação] = 1
+			)
+			
+			// Versao do professor
+			/*
+			Saldo Inicial = LOOKUPVALUE(
+			    'Movimentações'[Acumulado],
+			    'Movimentações'[Num. Movimentação],
+			    MIN('Movimentações'[Num. Movimentação])
+			)
+			*/
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 7b38f85a-2f78-47ad-b76e-d539cff7b79f
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Saldo Final' =
+			
+			CALCULATE(
+			    MAX('Movimentações'[Acumulado]),
+			    'Movimentações'[Num. Movimentação] = 999
+			)
+			
+			
+			// Versao do professor
+			/*
+			Saldo Final = LOOKUPVALUE(
+			    'Movimentações'[Acumulado],
+			    'Movimentações'[Num. Movimentação],
+			    MAX('Movimentações'[Num. Movimentação])
+			)
+			*/
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 5e284bb9-e4c1-4b6f-883e-6786a2a3039e
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Margem = ([Entradas] -[Saidas]) / [Entradas]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 3377ec1c-c0ad-4242-ac1f-983a5b5fbe3a
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

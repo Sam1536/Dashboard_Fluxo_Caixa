@@ -1,0 +1,109 @@
+table Movimentações
+	lineageTag: f2ee31f8-2ee1-464d-90a7-3c80d35e856a
+
+	column 'Num. Movimentação'
+		dataType: int64
+		formatString: 0
+		lineageTag: 758343a3-8d9d-4f0c-92e9-af038d44b7d8
+		summarizeBy: sum
+		sourceColumn: Num. Movimentação
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 02ba962e-6bc9-4822-979b-5ccd6aeb6b59
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Tipo Movimentação'
+		dataType: string
+		lineageTag: 2c25d26c-c282-4d0d-8351-3629716deda3
+		summarizeBy: none
+		sourceColumn: Tipo Movimentação
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Classificação
+		dataType: string
+		lineageTag: 8db0861b-102d-48b7-a02b-90fd094e5842
+		summarizeBy: none
+		sourceColumn: Classificação
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Documento
+		dataType: string
+		lineageTag: b1f65ba1-8923-40e2-aa68-8c8cdeac6ba5
+		summarizeBy: none
+		sourceColumn: Documento
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Centro de Custos'
+		dataType: string
+		lineageTag: aa06336b-0893-49d8-a5de-8ba543d7386a
+		summarizeBy: none
+		sourceColumn: Centro de Custos
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Valor
+		dataType: int64
+		formatString: 0
+		lineageTag: 33dc5e92-ea42-4f41-9e21-49851118c53e
+		summarizeBy: sum
+		sourceColumn: Valor
+
+		annotation SummarizationSetBy = Automatic
+
+	column Acumulado
+		dataType: int64
+		formatString: 0
+		lineageTag: 72d47b8d-03c1-412f-b4b8-f9106c2cf5a2
+		summarizeBy: sum
+		sourceColumn: Acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+	column Local
+		dataType: string
+		lineageTag: c28af6ba-9786-441f-91f1-71473231dc69
+		summarizeBy: none
+		sourceColumn: Local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition Movimentações-57755082-878a-40c2-965b-a2228bf302bb = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\a-agn\Documents\PoweBi Exercícios e Outros\PowerBI_Impressionador_Hashtag_2023 Materia\Importação e Tratamento de BD-Power Query\Lives Dashboards\Dashboard Fluxo de Caixa no Power BI\Movimentações.xlsx"), null, true),
+				    Movimentações_Sheet = Fonte{[Item="Movimentações",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Movimentações_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Núm. Movimentação", Int64.Type}, {"Data", type date}, {"Movimentação", type text}, {"Classificação", type text},  {"Local", type text}, {"Documento", type text}, {"Centro de Custos", type text}, {"Valor", Int64.Type}, {"Acumulado", Int64.Type}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado",{{"Movimentação", "Tipo Movimentação"}, {"Núm. Movimentação", "Num. Movimentação"}})
+				in
+				    #"Colunas Renomeadas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
